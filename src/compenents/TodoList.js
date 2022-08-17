@@ -6,13 +6,16 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
   const addTodo = (todo) => {
-    if (!todo.text || /^\s*$/.test(todo.text)) {
+    if (!newValue.text || /^\s*$/.test(newValue.text)) {
       return;
     }
-
     const newTodos = [todo, ...todos];
-
     setTodos(newTodos);
+  };
+
+  const removeTodo = (id) => {
+    const removeArr = [...todos].filter((todo) => todo.id !== id);
+    setTodos(removeTodo);
   };
 
   const completeTodo = (id) => {
@@ -25,11 +28,25 @@ const TodoList = () => {
     setTodos(updateTodos);
   };
 
+  const updateTodo = (todoId, newValue) => {
+    if (!todo.text || /^\s*$/.test(todo.text)) {
+      return;
+    }
+    setTodos((prev) =>
+      prev.map((item) => (item.id === todoId ? newValue : item))
+    );
+  };
+
   return (
     <div>
       <h1>Bugün için planın ne ?</h1>
       <TodoForm />
-      <Todo todos={todos} completeTodo={completeTodo} />
+      <Todo
+        todos={todos}
+        completeTodo={completeTodo}
+        removeTodo={removeTodo}
+        updateTodo={updateTodo}
+      />
     </div>
   );
 };

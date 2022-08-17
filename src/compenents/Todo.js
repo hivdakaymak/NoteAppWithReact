@@ -3,11 +3,24 @@ import TodoForm from "./TodoForm";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { TiEdit } from "react-icons/ti";
 
-const Todo = ({todos,complateTodo}) => {
+const Todo = ({ todos, complateTodo, removeTodo, updateTodo }) => {
   const [edit, setEdit] = useState({
     id: null,
     value: "",
   });
+
+  const submitUpdated = (value) => {
+    updateTodo(edit.id, value);
+    setEdit({
+      id: null,
+      value: "",
+    });
+  };
+
+  if (edit.id) {
+    return <TodoForm edit={edit} onSubmit={submitUpdated} />;
+  }
+
   return todos.map((todo, index) => (
     <div
       className={todos.complate ? "todo-row complate" : "todo-row"}
@@ -18,8 +31,14 @@ const Todo = ({todos,complateTodo}) => {
       </div>
 
       <div className="icons">
-        <RiCloseCircleLine />
-        <TiEdit />
+        <RiCloseCircleLine
+          onClick={() => removeTodo(todo.id)}
+          className="delete-icon"
+        />
+        <TiEdit
+          onClick={() => setEdit({ id: todo.id, value: todo.text })}
+          className="edit-icon"
+        />
       </div>
     </div>
   ));
